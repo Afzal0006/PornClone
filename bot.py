@@ -2,7 +2,7 @@ import asyncio
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, InputMediaPhoto
 from telegram.ext import Application, CommandHandler, ContextTypes, CallbackQueryHandler
 
-BOT_TOKEN = "8466069044:AAHOFWa0L1IGCfM5c9drx1w9zpqD4j-SDmU"
+BOT_TOKEN = "8355485098:AAGM2RIlfWz8DvoYXnvhJbBpec1Dv0AfOy0"
 
 # Image URLs
 START_IMAGE = "https://i.ibb.co/Mk5jTp1s/x.jpg"
@@ -30,22 +30,20 @@ PREMIUM_MESSAGE = (
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     chat_id = update.effective_chat.id
 
-    # Step 1: Starting...
-    msg1 = await context.bot.send_message(chat_id, "Starting...")
-    await asyncio.sleep(2)
-    await msg1.delete()
+    # Helper: send + auto-delete after 2 sec
+    async def send_temp(text: str):
+        m = await context.bot.send_message(chat_id, text, parse_mode="Markdown")
+        await asyncio.sleep(2)
+        try:
+            await m.delete()
+        except Exception:
+            pass
 
-    # Step 2: Please wait...
-    msg2 = await context.bot.send_message(chat_id, "Please wait ...")
-    await asyncio.sleep(3)
-    await msg2.delete()
+    # Temporary messages
+    await send_temp("**𝗦𝗧𝗔𝗥𝗧𝗜𝗡𝗚... 🔥**")
+    await send_temp("**𝗟𝗢𝗔𝗗𝗜𝗡𝗚 𝗘𝗫𝗖𝗟𝗨𝗦𝗜𝗩𝗘 𝗖𝗢𝗡𝗧𝗘𝗡𝗧... ⏳**")
 
-    # Step 3: ❤️ emoji
-    msg3 = await context.bot.send_message(chat_id, "❤️")
-    await asyncio.sleep(3)
-    await msg3.delete()
-
-    # Step 4: Normal Start message with photo + buttons
+    # Final Start message with photo + buttons
     keyboard = [
         [InlineKeyboardButton("💎 Get Premium", callback_data="get_premium")],
         [InlineKeyboardButton("🎥 Premium Demo", url="https://t.me/+bzLmBT9OeKRlMjU1")],
